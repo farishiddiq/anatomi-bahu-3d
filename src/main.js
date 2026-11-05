@@ -160,7 +160,9 @@ function renderLayers() {
   const q = state.search.trim().toLowerCase();
   let html = `<div class="side-head"><h2>Lapisan anatomi</h2><input class="search" id="search" placeholder="Cari: deltoid, tendon, saraf…" value="${esc(state.search)}" /></div><div class="side-body">`;
   for (const c of CATEGORIES) {
-    const items = STRUCTURES.filter((s) => s.cat === c.id && (!q || (s.en + ' ' + s.idn).toLowerCase().includes(q)));
+    const zr = { shoulder: 0, elbow: 1, hand: 2 };
+    const items = STRUCTURES.filter((s) => s.cat === c.id && (!q || (s.en + ' ' + s.idn).toLowerCase().includes(q)))
+      .map((s, i) => [s, i]).sort((a, b) => (zr[a[0].zone || 'shoulder'] - zr[b[0].zone || 'shoulder']) || a[1] - b[1]).map(([s]) => s);
     if (q && !items.length) continue;
     const L = viewer.layer[c.id];
     const open = state.openCats.has(c.id) || !!q;
