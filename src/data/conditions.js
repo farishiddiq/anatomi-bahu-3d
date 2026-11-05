@@ -1,0 +1,87 @@
+// Katalog EDUKASI kondisi bahu. BUKAN alat diagnosis.
+// Sumber: AAOS OrthoInfo; StatPearls (NCBI Bookshelf) – Rotator Cuff Tears, Shoulder Impingement Syndrome,
+// Biceps Tendonitis, SLAP Lesions, Adhesive Capsulitis, Shoulder Dislocation, Acromioclavicular Joint Injury;
+// Hegedus EJ dkk. Br J Sports Med 2012 (uji klinis bahu).
+
+export const CONDITIONS = [
+  {
+    id: 'rc_tear', en: 'Rotator cuff tear', idn: 'Robekan rotator cuff',
+    affected: ['supraspinatus_t', 'infraspinatus_t', 'supraspinatus', 'subscapularis_t'],
+    what: 'Tendon rotator cuff robek sebagian (partial-thickness) atau tembus (full-thickness), paling sering pada tendon supraspinatus dekat tempat menempelnya di greater tubercle, bisa meluas ke infraspinatus atau subscapularis. Bisa karena degenerasi (usia >40, gerakan berulang di atas kepala) atau trauma (jatuh, menahan beban mendadak).',
+    symptoms: ['Nyeri bahu samping yang bisa menjalar ke lengan atas', 'Nyeri malam, sulit tidur miring ke sisi sakit', 'Lemah saat mengangkat atau memutar lengan', 'Kadang bunyi gemeretak (crepitus)'],
+    movements: ['abduction', 'flexion', 'external_rotation'],
+    exams: ['Empty can / Jobe test (supraspinatus)', 'Drop arm test', 'External rotation lag sign (infraspinatus)', 'Lift-off & belly-press test (subscapularis)', 'USG bahu atau MRI (kadang MR arthrography)', 'Rontgen untuk menyingkirkan masalah tulang'],
+  },
+  {
+    id: 'ss_tendinopathy', en: 'Supraspinatus tendinopathy', idn: 'Tendinopati supraspinatus',
+    affected: ['supraspinatus_t', 'supraspinatus'],
+    what: 'Gangguan pada tendon supraspinatus akibat beban berlebih/berulang sehingga struktur tendon berubah dan nyeri. Dulu sering disebut "tendinitis", tetapi pada kasus kronis biasanya lebih bersifat degeneratif daripada radang. Varian: calcific tendinitis (endapan kalsium di tendon).',
+    symptoms: ['Nyeri bahu samping, bisa terasa sampai area insersio deltoid', 'Painful arc ±60–120° saat mengangkat lengan ke samping', 'Nyeri saat aktivitas di atas kepala', 'Nyeri malam'],
+    movements: ['abduction', 'flexion'],
+    exams: ['Painful arc test', 'Empty can test (nyeri)', 'Hawkins-Kennedy & Neer test', 'USG (penebalan tendon, kalsifikasi) atau MRI'],
+  },
+  {
+    id: 'impingement', en: 'Shoulder impingement (subacromial pain syndrome)', idn: 'Impingement bahu (sindrom nyeri subakromial)',
+    affected: ['supraspinatus_t', 'subacromial_bursa', 'acromion', 'ca_lig'],
+    what: 'Tendon supraspinatus dan bursa subakromial teriritasi/terjepit di ruang sempit antara kepala humerus dan "atap" coracoacromial arch (akromion + ligamen coracoacromial) saat lengan diangkat. Istilah yang kini banyak dipakai: subacromial pain syndrome. Faktor: kelemahan rotator cuff, pola gerak belikat, bentuk akromion, aktivitas berulang di atas kepala.',
+    symptoms: ['Nyeri samping/depan bahu saat mengangkat lengan', 'Painful arc ±60–120°', 'Nyeri saat meraih ke atas atau ke belakang', 'Nyeri saat tidur miring'],
+    movements: ['abduction', 'flexion', 'internal_rotation'],
+    exams: ['Neer test', 'Hawkins-Kennedy test', 'Painful arc', 'Rontgen (bentuk akromion, outlet view)', 'USG dinamis atau MRI', 'Kadang subacromial injection test'],
+  },
+  {
+    id: 'biceps_tendinitis', en: 'Biceps tendinitis (LHB tendinopathy)', idn: 'Tendinitis bisep (kepala panjang)',
+    affected: ['lhb_t', 'biceps', 'transverse_humeral_lig'],
+    what: 'Iritasi/peradangan atau degenerasi tendon kepala panjang bisep, terutama di bicipital groove. Sering menyertai masalah rotator cuff atau impingement; juga bisa karena tendon tidak stabil di alurnya.',
+    symptoms: ['Nyeri bahu depan, nyeri tekan di bicipital groove', 'Nyeri menjalar ke lengan atas depan', 'Nyeri saat mengangkat beban di depan tubuh atau memutar lengan bawah'],
+    movements: ['flexion', 'horizontal_adduction', 'internal_rotation'],
+    exams: ["Speed's test", "Yergason's test", 'Palpasi bicipital groove', 'USG (cairan di sekitar tendon, posisi tendon)', 'MRI'],
+  },
+  {
+    id: 'labral_tear', en: 'Labral tear (incl. SLAP lesion)', idn: 'Robekan labrum (termasuk SLAP)',
+    affected: ['labrum', 'lhb_t', 'glenoid', 'gh_lig'],
+    what: 'Robekan cincin tulang rawan (labrum) di tepi glenoid. SLAP (Superior Labrum Anterior to Posterior) adalah robekan labrum bagian atas di jangkar tendon bisep – sering pada atlet lempar atau jatuh menumpu tangan. Bankart lesion adalah robekan labrum depan-bawah, biasanya setelah dislokasi.',
+    symptoms: ['Nyeri dalam di sendi bahu', 'Bunyi klik, "nyangkut" atau terkunci', 'Rasa tidak stabil', 'Kekuatan/kecepatan lempar menurun'],
+    movements: ['abduction', 'external_rotation', 'flexion'],
+    exams: ["O'Brien active compression test", 'Crank test', 'Biceps load test', 'Apprehension/relocation test (instability)', 'MR arthrography (pencitraan terbaik)', 'Arthroscopy (konfirmasi pasti)'],
+  },
+  {
+    id: 'bursitis', en: 'Shoulder (subacromial) bursitis', idn: 'Bursitis bahu (subakromial)',
+    affected: ['subacromial_bursa', 'supraspinatus_t'],
+    what: 'Bursa subakromial–subdeltoid meradang/menebal sehingga gesekan antara rotator cuff dan akromion meningkat. Sering bersamaan dengan impingement atau tendinopati rotator cuff.',
+    symptoms: ['Nyeri samping bahu', 'Nyeri saat berbaring di sisi yang sakit', 'Painful arc', 'Nyeri saat menekan area di bawah akromion'],
+    movements: ['abduction', 'flexion'],
+    exams: ['Pemeriksaan fisik (painful arc, Neer, Hawkins)', 'USG (penebalan bursa, cairan)', 'MRI'],
+  },
+  {
+    id: 'frozen_shoulder', en: 'Frozen shoulder (adhesive capsulitis)', idn: 'Frozen shoulder (bahu beku)',
+    affected: ['gh_joint', 'ch_lig', 'gh_lig'],
+    what: 'Kapsul sendi glenohumeral meradang lalu menebal dan mengerut (fibrosis), terutama di area rotator interval/ligamen coracohumeral. Biasanya melewati fase: nyeri (freezing) → kaku (frozen) → membaik perlahan (thawing), bisa berbulan-bulan hingga tahunan. Lebih sering pada usia 40–60, perempuan, diabetes, dan gangguan tiroid.',
+    symptoms: ['Nyeri bahu difus, sering memburuk malam hari', 'Kaku progresif – gerak aktif DAN pasif sama-sama terbatas', 'Terutama sulit memutar lengan keluar (external rotation)', 'Sulit menyisir rambut, memakai baju, meraih punggung'],
+    movements: ['external_rotation', 'abduction', 'internal_rotation', 'flexion'],
+    exams: ['Pemeriksaan ROM aktif & pasif (keterbatasan rotasi eksternal pasif adalah khas)', 'Rontgen (biasanya normal; untuk menyingkirkan osteoarthritis)', 'USG/MRI (penebalan ligamen coracohumeral/kapsul)', 'Cek gula darah/tiroid bila perlu'],
+  },
+  {
+    id: 'dislocation', en: 'Shoulder dislocation', idn: 'Dislokasi bahu',
+    affected: ['gh_joint', 'humerus', 'glenoid', 'labrum', 'gh_lig', 'axillary_n'],
+    what: 'Kepala humerus keluar dari mangkuk glenoid. Lebih dari 95% terjadi ke depan (anterior), biasanya saat lengan terangkat dan terputar keluar. Bisa disertai Bankart lesion (labrum/glenoid depan-bawah), Hill-Sachs lesion (lekukan kepala humerus), cedera axillary nerve, atau robekan rotator cuff (pada usia lebih tua).',
+    symptoms: ['Nyeri hebat mendadak', 'Bentuk bahu berubah ("kotak", tonjolan di depan)', 'Lengan tidak bisa digerakkan, ditahan sedikit menjauh dari badan', 'Mati rasa di sisi luar bahu (bila saraf aksilaris terkena)'],
+    movements: ['abduction', 'external_rotation', 'flexion', 'horizontal_abduction'],
+    exams: ['Rontgen (AP, scapular Y, axillary view) sebelum & sesudah reposisi', 'Pemeriksaan saraf & pembuluh darah (sensasi bahu lateral, denyut nadi)', 'MRI/MR arthrography untuk labrum & ligamen', 'Apprehension & relocation test (instabilitas setelahnya)', 'CT bila ada kecurigaan patah tulang'],
+  },
+  {
+    id: 'ac_injury', en: 'AC joint injury (separation)', idn: 'Cedera sendi AC',
+    affected: ['ac_joint', 'ac_lig', 'cc_lig', 'clavicle', 'acromion'],
+    what: 'Cedera ligamen penyangga sendi akromioklavikular, biasanya karena jatuh langsung ke puncak bahu. Klasifikasi Rockwood I–VI: tipe I ligamen AC teregang; tipe II ligamen AC robek; tipe III ke atas ligamen AC dan CC robek sehingga ujung klavikula tampak menonjol.',
+    symptoms: ['Nyeri tepat di puncak bahu', 'Bengkak, benjolan/"step" di ujung klavikula', 'Nyeri saat menyilangkan lengan ke depan dada atau mengangkat lengan tinggi'],
+    movements: ['horizontal_adduction', 'flexion', 'abduction'],
+    exams: ['Palpasi sendi AC', 'Cross-body adduction test', "O'Brien test (nyeri di puncak bahu)", 'Rontgen (Zanca view, perbandingan kedua sisi)'],
+  },
+  {
+    id: 'strain', en: 'Muscle strain', idn: 'Strain otot (otot tertarik)',
+    affected: ['deltoid', 'trapezius', 'pec_major', 'latissimus', 'rhomboid_major', 'levator_scapulae'],
+    what: 'Serabut otot atau sambungan otot-tendon teregang berlebihan hingga robek mikro sampai robek total (derajat I–III). Di sekitar bahu sering mengenai trapezius atas, deltoid, pectoralis major (mis. bench press), latissimus dorsi, romboid, atau otot rotator cuff.',
+    symptoms: ['Nyeri lokal dan nyeri tekan pada otot', 'Nyeri saat otot dikontraksikan atau diregangkan', 'Bengkak/memar (derajat lebih berat)', 'Kaku dan lemah'],
+    movements: ['flexion', 'abduction', 'horizontal_adduction', 'extension'],
+    exams: ['Riwayat cedera & palpasi', 'Tes kekuatan melawan tahanan (resisted testing)', 'USG atau MRI bila curiga robekan besar (mis. ruptur pectoralis major)'],
+  },
+];

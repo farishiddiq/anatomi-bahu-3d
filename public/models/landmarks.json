@@ -1,0 +1,157 @@
+{
+ "units": "mm",
+ "origin": "glenohumeral center",
+ "source": "Z-Anatomy (CC BY-SA 4.0) / BodyParts3D (CC BY-SA 2.1 JP)",
+ "axes": {
+  "up": [
+   0,
+   1,
+   0
+  ],
+  "anterior": [
+   0,
+   0,
+   1
+  ],
+  "lateral": [
+   -1,
+   0,
+   0
+  ]
+ },
+ "gh": [
+  0,
+  0,
+  0
+ ],
+ "headR": 22.71,
+ "elbow": [
+  -47.4,
+  -277.3,
+  -9.5
+ ],
+ "sc": [
+  151.7,
+  16.9,
+  56.5
+ ],
+ "ac": [
+  15.1,
+  35.6,
+  -8.8
+ ],
+ "glenC": [
+  20,
+  0.1,
+  -8.8
+ ],
+ "scapInf": [
+  73.8,
+  -127.5,
+  -74.4
+ ],
+ "spinoglenoid": [
+  30.3,
+  2.7,
+  -42.9
+ ],
+ "shaft": {
+  "c": [
+   -33.5,
+   -98.6,
+   1.3
+  ],
+  "r": 9.8
+ },
+ "footprints": {
+  "deltoid_clav": [
+   "fp_deltoid_clav_o_clavicle"
+  ],
+  "deltoid_acrom": [
+   "fp_deltoid_acrom_o_scapula"
+  ],
+  "deltoid_spinal": [
+   "fp_deltoid_spinal_o_scapula"
+  ],
+  "supraspinatus": [
+   "fp_supraspinatus_o_scapula",
+   "fp_supraspinatus_i_humerus"
+  ],
+  "infraspinatus": [
+   "fp_infraspinatus_o_scapula",
+   "fp_infraspinatus_i_humerus"
+  ],
+  "teres_minor": [
+   "fp_teres_minor_o_scapula",
+   "fp_teres_minor_i_humerus"
+  ],
+  "teres_major": [
+   "fp_teres_major_o_scapula"
+  ],
+  "subscapularis": [
+   "fp_subscapularis_o_scapula",
+   "fp_subscapularis_i_humerus"
+  ],
+  "trap_desc": [
+   "fp_trap_desc_i_scapula"
+  ],
+  "trap_trans": [
+   "fp_trap_trans_i_scapula"
+  ],
+  "trap_asc": [
+   "fp_trap_asc_o_thorax",
+   "fp_trap_asc_o_clavicle"
+  ],
+  "latissimus": [
+   "fp_latissimus_o_thorax",
+   "fp_latissimus_o_scapula"
+  ],
+  "pec_major_sternal": [
+   "fp_pec_major_sternal_o_thorax"
+  ],
+  "pec_major_abd": [
+   "fp_pec_major_abd_o_thorax"
+  ],
+  "pec_minor": [
+   "fp_pec_minor_o_thorax",
+   "fp_pec_minor_i_scapula"
+  ],
+  "rhomboid_major": [
+   "fp_rhomboid_major_i_scapula"
+  ],
+  "rhomboid_minor": [
+   "fp_rhomboid_minor_i_scapula"
+  ],
+  "levator_scapulae": [
+   "fp_levator_scapulae_o_thorax",
+   "fp_levator_scapulae_i_scapula"
+  ],
+  "biceps_long": [
+   "fp_biceps_long_o_scapula"
+  ],
+  "triceps_long": [
+   "fp_triceps_long_o_scapula"
+  ],
+  "triceps_lat": [
+   "fp_triceps_lat_o_humerus"
+  ],
+  "triceps_med": [
+   "fp_triceps_med_o_humerus"
+  ],
+  "coracobrachialis": [
+   "fp_coracobrachialis_o_scapula"
+  ],
+  "serratus_anterior": [
+   "fp_serratus_anterior_o_thorax",
+   "fp_serratus_anterior_i_scapula"
+  ],
+  "subclavius": [
+   "fp_subclavius_i_clavicle"
+  ]
+ },
+ "derivedTendons": {
+  "supraspinatus_t": 22,
+  "subscapularis_t": 20,
+  "teres_minor_t": 16
+ }
+}
