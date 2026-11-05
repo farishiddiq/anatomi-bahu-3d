@@ -15,5 +15,7 @@ export function regionMarkers(lm) {
     scapular: { p: V(lm.spinoglenoid).lerp(V(lm.scapInf), 0.5).addScaledVector(L, -38).addScaledVector(A, -22), c: SCAP },
     axilla: { p: GH.clone().addScaledVector(U, -48).addScaledVector(L, -22).addScaledVector(A, 4), c: [0.5, 0.5, 0.5, 0] },
     arm_junction: { p: V(lm.shaft.c).addScaledVector(L, lm.shaft.r + 26).addScaledVector(A, 6).addScaledVector(U, 10), c: HUM },
+    elbow: { p: V(lm.epiLat || lm.elbow).lerp(V(lm.epiMed || lm.elbow), 0.5).addScaledVector(A, 34), c: [1, 1, 1, 0.5] },
+    hand: { p: V(lm.wrist || lm.elbow).lerp(V(lm.hand || lm.elbow), 0.5).addScaledVector(A, 28), c: [1, 1, 1, 1] },
   };
 }

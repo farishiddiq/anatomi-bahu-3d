@@ -7,8 +7,10 @@ import { makeMaterial, HL } from './materials.js';
 import { regionMarkers } from './markers.js';
 import { STRUCTURES, BY_ID, CATEGORIES } from './data/structures.js';
 
-const TRANSLUCENT = new Set(['gh_capsule', 'ac_capsule', 'sc_capsule', 'bursa_subacromial', 'bursa_subdeltoid']);
-const LEVEL_OF ={ clavicle: 1, scapula: 2, humerus: 3, ctx_radius: 4, ctx_ulna: 4 };
+const TRANSLUCENT = new Set(['gh_capsule', 'ac_capsule', 'sc_capsule', 'bursa_subacromial', 'bursa_subdeltoid',
+  'elbow_capsule', 'wrist_capsule', 'mcp_capsule', 'pip_capsule', 'dip_capsule', 'common_flexor_sheath', 'digital_sheaths', 'palmar_aponeurosis']);
+const SHEATH = new Set(['common_flexor_sheath', 'digital_sheaths']);
+const LEVEL_OF ={ clavicle: 1, scapula: 2, humerus: 3 };
 export function partLabel(d, part) {
   if (!part) return null;
   if (d.parts?.[part]) return d.parts[part];
@@ -28,6 +30,15 @@ function deinterleave(geo) {
     for (let i = 0; i < n; i++) for (let j = 0; j < k; j++) arr[i * k + j] = attr.getComponent(i, j);
     geo.setAttribute(name, new THREE.BufferAttribute(arr, k));
   }
+  // rig chain weights are stored as normalized uint8 → floats 0..1 for the rig
+  const ch = geo.attributes._chain;
+  if (ch && !(ch.array instanceof Float32Array)) {
+    const arr = new Float32Array(ch.count * 4);
+    for (let i = 0; i < ch.count; i++) for (let j = 0; j < 4; j++) arr[i * 4 + j] = ch.getComponent(i, j) / (ch.normalized ? 255 : 1);
+    geo.setAttribute('_chain', new THREE.BufferAttribute(arr, 4));
+  }
+  // normals are not stored in the GLB (smaller download); same area-weighted normals as the build
+  if (!geo.attributes.normal) geo.computeVertexNormals();
   return geo;
 }
 
@@ -50,7 +61,7 @@ export class Viewer extends EventTarget {
     this.controls.dampingFactor = 0.08;
     this.controls.screenSpacePanning = true;
     this.controls.minDistance = 60;
-    this.controls.maxDistance = 1600;
+    this.controls.maxDistance = 2600;
     this.controls.zoomSpeed = 1.1;
 
     const pmrem = new THREE.PMREMGenerator(this.renderer);
@@ -120,6 +131,7 @@ export class Viewer extends EventTarget {
         if (TRANSLUCENT.has(k)) mat.userData.translucent = true;
         if (k.startsWith('bursa_')) { mat.color.set('#6fd6ff'); mat.userData.baseColor = mat.color.clone(); }
         if (k === 'labrum' || k.endsWith('_disc')) { mat.color.set('#d9c8ff'); mat.userData.baseColor = mat.color.clone(); }
+        if (SHEATH.has(k)) { mat.color.set('#7fe0c8'); mat.userData.baseColor = mat.color.clone(); }
         const mesh = new THREE.Mesh(geo, mat);
         mesh.name = k;
         mesh.userData = { sid: def.id, part: k, cat: def.cat };
@@ -139,7 +151,8 @@ export class Viewer extends EventTarget {
       mesh.userData = { footprint: true, muscle, type };
       this.root.add(mesh);
       this.rig.addRigid(mesh, level ?? 0);
-      (this.footprints[muscle] ||= []).push(mesh);
+      // a footprint can be shared by several muscles (e.g. the common flexor / extensor origin)
+      for (const mk of String(muscle).split(',')) (this.footprints[mk] ||= []).push(mesh);
     }
     // pain-region markers
     this.markers = {};
@@ -194,6 +207,17 @@ export class Viewer extends EventTarget {
       top: U.clone().addScaledVector(A, 0.35).addScaledVector(L, 0.2), front3q: A.clone().addScaledVector(L, 0.75).addScaledVector(U, 0.18),
       back3q: A.clone().negate().addScaledVector(L, 0.7).addScaledVector(U, 0.15),
     };
+    if (name === 'arm') {
+      // whole upper limb, shoulder to fingertips, seen from the front-lateral side
+      const tipY = this.lm.fingertipY ?? -680;
+      const target = new THREE.Vector3(0, tipY * 0.47, 0).addScaledVector(L, 30).addScaledVector(A, 15);
+      const d = A.clone().addScaledVector(L, 0.55).normalize();
+      const h = Math.abs(tipY) + 300; // height to fit (mm), with margin
+      const fov = THREE.MathUtils.degToRad(this.camera.fov);
+      const dist = Math.max(h / 2 / Math.tan(fov / 2), (h * 0.45) / 2 / Math.tan(fov / 2) / this.camera.aspect);
+      this._fly(target, target.clone().addScaledVector(d, dist), instant);
+      return;
+    }
     const dir = (dirs[name] || dirs.front).normalize();
     const portrait = this.camera.aspect < 0.9;
     const dist = portrait ? 1050 : 740;
@@ -299,7 +323,9 @@ export class Viewer extends EventTarget {
         keys.forEach((k) => fpKeys.add(k));
       }
     }
-    for (const [k, list] of Object.entries(this.footprints || {})) for (const m of list) m.visible = fpKeys.has(k);
+    const show = new Set();
+    for (const [k, list] of Object.entries(this.footprints || {})) if (fpKeys.has(k)) list.forEach((m) => show.add(m));
+    for (const list of Object.values(this.footprints || {})) for (const m of list) m.visible = show.has(m);
   }
 
   // ───────── pose / markers ─────────

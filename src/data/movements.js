@@ -145,4 +145,38 @@ export const MOVEMENTS = [
     joints: ['gh_joint', 'st_joint', 'ac_joint', 'sc_joint'],
     note: 'Menyilangkan lengan ke depan dada (cross-body adduction) menekan sendi AC – nyeri di puncak bahu pada gerakan ini sering dikaitkan dengan sendi AC.',
   },
+
+  // ───── siku ─────
+  {
+    id: 'elbow_flexion', zone: 'elbow', en: 'Elbow flexion', idn: 'Fleksi siku', range: '0–±145°',
+    desc: 'Menekuk siku sehingga tangan mendekati bahu (mis. mengangkat barang ke arah badan).',
+    pose: { elbow: 125, from: { elbow: 0 } },
+    prime: [
+      ['brachialis', 'Penekuk utama di semua posisi telapak (menempel pada ulna).'],
+      ['biceps', 'Paling kuat saat telapak menghadap ke atas (supinasi); sekaligus memutar telapak ke atas.'],
+      ['brachioradialis', 'Paling kuat pada posisi "jempol di atas" (setengah pronasi).'],
+    ],
+    synergist: [
+      ['pronator_teres', 'Membantu, terutama saat menekuk melawan tahanan.'],
+      ['ecrl', 'Membantu sedikit (origin di atas sendi siku).'],
+      ['fcr', 'Kelompok fleksor dari epikondilus medial membantu sedikit.'],
+    ],
+    tendons: [],
+    joints: ['elbow_joint', 'ucl_elbow', 'rcl_elbow', 'annular_lig'],
+    note: 'Saat siku ditekuk saraf ulnaris di belakang epikondilus medial ikut teregang dan tertekan – karena itu gejala cubital tunnel syndrome sering muncul saat siku lama ditekuk. Animasi hanya menekuk siku; pronasi/supinasi dan gerak pergelangan/jari tidak diperagakan.',
+  },
+  {
+    id: 'elbow_extension', zone: 'elbow', en: 'Elbow extension', idn: 'Ekstensi siku', range: 'kembali ke 0°',
+    desc: 'Meluruskan siku dari posisi tertekuk (mis. mendorong, push-up, melempar).',
+    pose: { elbow: 125 }, reverse: true,
+    prime: [
+      ['triceps', 'Pelurus utama; kepala medial bekerja di semua kondisi, kepala lateral & panjang saat melawan beban.'],
+    ],
+    synergist: [
+      ['anconeus', 'Membantu meluruskan dan menstabilkan siku.'],
+    ],
+    tendons: [],
+    joints: ['elbow_joint', 'ucl_elbow', 'rcl_elbow'],
+    note: 'Pada fase akhir melempar, siku diluruskan sangat cepat dengan gaya valgus besar yang ditahan UCL – bahu dan siku pelempar bekerja sebagai satu rantai.',
+  },
 ];

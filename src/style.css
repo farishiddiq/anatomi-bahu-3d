@@ -75,6 +75,7 @@ input, select { font: inherit; }
 .layer-items { display: none; border-top: 1px solid var(--border); padding: 4px 0; }
 .layer.open .layer-items { display: block; }
 .item { display: flex; align-items: center; gap: 6px; padding: 5px 10px 5px 26px; cursor: pointer; font-size: 13px; }
+.zone-head { padding: 8px 10px 3px 26px; font-size: 10.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--dim); }
 .item:hover { background: var(--panel-3); }
 .item.sel { background: #4cc3ff1c; color: #bfe9ff; }
 .item .label { flex: 1; min-width: 0; }

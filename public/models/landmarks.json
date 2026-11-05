@@ -63,6 +63,27 @@
   ],
   "r": 9.8
  },
+ "epiLat": [
+  -81.6,
+  -269,
+  -16.6
+ ],
+ "epiMed": [
+  -16.2,
+  -274.8,
+  -8.9
+ ],
+ "wrist": [
+  -96.5,
+  -531.5,
+  46.6
+ ],
+ "hand": [
+  -98.7,
+  -575.1,
+  53.5
+ ],
+ "fingertipY": -683.1,
  "footprints": {
   "deltoid_clav": [
    "fp_deltoid_clav_o_clavicle"
@@ -147,6 +168,111 @@
   ],
   "subclavius": [
    "fp_subclavius_i_clavicle"
+  ],
+  "brachialis": [
+   "fp_brachialis_o_humerus",
+   "fp_brachialis_i_forearm"
+  ],
+  "brachioradialis": [
+   "fp_brachioradialis_o_humerus",
+   "fp_brachioradialis_i_forearm"
+  ],
+  "pt_sup": [
+   "fp_pt_sup_o_humerus",
+   "fp_pt_sup_i_forearm",
+   "fp_common_flexor_tendon_o_humerus"
+  ],
+  "fcr": [
+   "fp_common_flexor_tendon_o_humerus"
+  ],
+  "palmaris_longus": [
+   "fp_common_flexor_tendon_o_humerus"
+  ],
+  "fcu_hum": [
+   "fp_common_flexor_tendon_o_humerus",
+   "fp_fcu_hum_i_forearm"
+  ],
+  "fds_hu": [
+   "fp_common_flexor_tendon_o_humerus",
+   "fp_fds_hu_o_forearm",
+   "fp_fds_hu_i_forearm"
+  ],
+  "fcu_uln": [
+   "fp_fcu_uln_o_forearm"
+  ],
+  "fdp": [
+   "fp_fdp_i_forearm"
+  ],
+  "fpl": [
+   "fp_fpl_o_forearm",
+   "fp_fpl_i_forearm"
+  ],
+  "ecrl": [
+   "fp_ecrl_o_humerus",
+   "fp_ecrl_i_forearm"
+  ],
+  "ecrb": [
+   "fp_ecrb_i_forearm",
+   "fp_common_extensor_tendon_o_humerus"
+  ],
+  "ext_digitorum": [
+   "fp_common_extensor_tendon_o_humerus",
+   "fp_ext_digitorum_i_forearm"
+  ],
+  "edm": [
+   "fp_common_extensor_tendon_o_humerus"
+  ],
+  "ecu_hum": [
+   "fp_common_extensor_tendon_o_humerus",
+   "fp_ecu_hum_o_forearm",
+   "fp_ecu_hum_i_forearm"
+  ],
+  "anconeus": [
+   "fp_anconeus_o_humerus",
+   "fp_anconeus_i_forearm"
+  ],
+  "supinator": [
+   "fp_supinator_o_forearm",
+   "fp_supinator_i_forearm"
+  ],
+  "apl": [
+   "fp_apl_o_forearm",
+   "fp_apl_i_forearm"
+  ],
+  "epb": [
+   "fp_epb_o_forearm",
+   "fp_epb_i_forearm"
+  ],
+  "epl": [
+   "fp_epl_o_forearm",
+   "fp_epl_i_forearm"
+  ],
+  "ext_indicis": [
+   "fp_ext_indicis_o_forearm",
+   "fp_ext_indicis_i_forearm"
+  ],
+  "fpb_deep": [
+   "fp_fpb_deep_o_forearm"
+  ],
+  "add_obl": [
+   "fp_adductor_pollicis_i_forearm"
+  ],
+  "add_trans": [
+   "fp_adductor_pollicis_i_forearm"
+  ],
+  "adm": [
+   "fp_adm_o_forearm",
+   "fp_adm_i_forearm"
+  ],
+  "fdm": [
+   "fp_fdm_o_forearm",
+   "fp_fdm_i_forearm"
+  ],
+  "odm": [
+   "fp_odm_o_forearm"
+  ],
+  "dorsal_interossei": [
+   "fp_dorsal_interossei_o_forearm"
   ]
  },
  "derivedTendons": {

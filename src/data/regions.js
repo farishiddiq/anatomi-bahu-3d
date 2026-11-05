@@ -37,6 +37,16 @@ export const REGIONS = [
     structures: ['deltoid', 'lhb_t', 'biceps', 'pec_major', 'latissimus', 'teres_major', 'humerus', 'axillary_n', 'post_circ_a'],
     note: 'Area insersio deltoid dan otot-otot yang menempel di sekitar bicipital groove. Nyeri rotator cuff sering "dirujuk" ke area ini meski sumbernya di atas.',
   },
+  {
+    id: 'elbow', en: 'Elbow', idn: 'Siku', view: 'front', marker: 'elbow',
+    structures: ['elbow_joint', 'ecrb', 'ext_digitorum', 'rcl_elbow', 'annular_lig', 'supinator', 'radial_n', 'ucl_elbow', 'fcu', 'pronator_teres', 'ulnar_n', 'biceps', 'brachialis', 'median_n', 'triceps', 'ulna'],
+    note: 'Sisi luar: origin otot ekstensor (tennis elbow), ligamen kolateral radial & anular, saraf radialis. Sisi dalam: origin otot fleksor (golfer’s elbow), UCL, saraf ulnaris (cubital tunnel). Depan: tendon biseps distal & brakialis. Belakang: olekranon & trisep. Nyeri siku juga bisa dirujuk dari leher (C6–C7).',
+  },
+  {
+    id: 'hand', en: 'Forearm, wrist & hand (incl. tingling)', idn: 'Lengan bawah, pergelangan & tangan (termasuk kesemutan)', view: 'front', marker: 'hand',
+    structures: ['median_n', 'ulnar_n', 'radial_n', 'flexor_retinaculum', 'flexor_sheaths', 'carpals', 'wrist_joint', 'druj', 'apl', 'epb', 'thenar', 'hypothenar', 'fibrous_sheaths'],
+    note: 'Kesemutan/baal di jari biasanya mengikuti peta saraf: ibu jari–jari manis separuh = saraf medianus (mis. carpal tunnel); kelingking & separuh jari manis = saraf ulnaris (siku atau Guyon canal); punggung tangan sisi ibu jari = cabang superfisial saraf radialis. Kesemutan juga bisa berasal dari leher (C6–C8) atau thoracic outlet – jadi lokasi jepitan tidak selalu di tangan.',
+  },
 ];
 
 export const RED_FLAGS = [

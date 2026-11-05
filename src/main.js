@@ -13,6 +13,8 @@ const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<
 const CAT = Object.fromEntries(CATEGORIES.map((c) => [c.id, c]));
 const catColor = (id) => { const d = BY_ID[id]; if (!d) return '#888'; if (d.cat === 'vessel') return d.venous ? '#3f6fd8' : '#e0353f'; return CAT[d.cat].color; };
 const hex = (c) => '#' + c.getHexString();
+const groupHead = (arr, i, key, labels) => (i === 0 || (arr[i - 1][key] || 'shoulder') !== (arr[i][key] || 'shoulder')) ? `<div class="zone-head" style="padding-left:2px">${labels[arr[i][key] || 'shoulder']}</div>` : '';
+const ZONES = { shoulder: 'Bahu & lengan atas', elbow: 'Siku & lengan bawah', hand: 'Pergelangan & tangan' };
 
 const state = {
   mode: 'explore', sel: null, part: null, movement: null, condition: null, region: null,
@@ -170,10 +172,15 @@ function renderLayers() {
         <span class="count">${items.length}</span><span class="chev">▶</span>
       </div>
       <div class="layer-op"><span>Opasitas</span><input type="range" min="0" max="1" step="0.05" value="${L.opacity}" data-op="${c.id}" aria-label="Opasitas ${c.label}"/></div>
-      <div class="layer-items">${items.map((s) => `
+      <div class="layer-items">${items.map((s, i) => {
+        const z = s.zone || 'shoulder';
+        const multi = new Set(items.map((x) => x.zone || 'shoulder')).size > 1;
+        const head = multi && (i === 0 || (items[i - 1].zone || 'shoulder') !== z) ? `<div class="zone-head">${ZONES[z]}</div>` : '';
+        return `${head}
         <div class="item ${state.sel === s.id ? 'sel' : ''}" data-sid="${s.id}">
           <span class="label">${esc(s.en)}<small>${esc(s.idn)}</small></span>${kindBadge(s)}
-        </div>`).join('')}</div>
+        </div>`;
+      }).join('')}</div>
     </div>`;
   }
   html += `<p class="hint">Klik struktur pada model atau daftar ini. Seret untuk memutar, scroll/pinch untuk zoom, klik-kanan/dua jari untuk menggeser.</p></div>`;
@@ -202,17 +209,17 @@ left.addEventListener('input', (e) => {
 });
 
 function renderMovementList() {
-  left.innerHTML = `<div class="side-head"><h2>Gerakan bahu</h2></div><div class="side-body">
+  left.innerHTML = `<div class="side-head"><h2>Gerakan</h2></div><div class="side-body">
     <p class="hint">Pilih gerakan untuk melihat peragaan 3D, otot penggerak utama, tendon, dan sendi yang terlibat.</p>
-    ${MOVEMENTS.map((m) => `<div class="list-card ${state.movement === m.id ? 'active' : ''}" data-mv="${m.id}"><div class="t">${m.idn}</div><div class="s">${m.en} · ${m.range}</div></div>`).join('')}
+    ${MOVEMENTS.map((m, i) => `${groupHead(MOVEMENTS, i, 'zone', { shoulder: 'Bahu', elbow: 'Siku' })}<div class="list-card ${state.movement === m.id ? 'active' : ''}" data-mv="${m.id}"><div class="t">${m.idn}</div><div class="s">${m.en} · ${m.range}</div></div>`).join('')}
     <p class="hint" style="margin-top:12px">Animasi fleksi/abduksi diperagakan sampai ±120° (bukan 180°) agar bentuk otot tetap wajar. Animasi menyederhanakan gerak tulang belikat (scapulohumeral rhythm) dan memakai pembengkokan otot otomatis – bentuk otot saat bergerak adalah perkiraan visual.</p>
   </div>`;
 }
 
 function renderConditionList() {
-  left.innerHTML = `<div class="side-head"><h2>Katalog cedera bahu</h2></div><div class="side-body">
+  left.innerHTML = `<div class="side-head"><h2>Katalog cedera</h2></div><div class="side-body">
     <div class="disclaimer"><b>Katalog edukasi, bukan alat diagnosis.</b> Banyak kondisi memiliki gejala yang mirip. Diagnosis hanya bisa ditegakkan dokter melalui pemeriksaan langsung.</div>
-    ${CONDITIONS.map((c) => `<div class="list-card ${state.condition === c.id ? 'active' : ''}" data-cond="${c.id}"><div class="t">${c.en}</div><div class="s">${c.idn}</div></div>`).join('')}
+    ${CONDITIONS.map((c, i) => `${groupHead(CONDITIONS, i, 'zone', { shoulder: 'Bahu', arm: 'Siku, pergelangan & tangan' })}<div class="list-card ${state.condition === c.id ? 'active' : ''}" data-cond="${c.id}"><div class="t">${c.en}</div><div class="s">${c.idn}</div></div>`).join('')}
   </div>`;
 }
 
@@ -227,6 +234,8 @@ function bodySvg(side) {
       ['lateral', 'M30 96c2-6 6-10 12-13l8 12c-3 3-6 8-7 13z'],
       ['axilla', 'M58 122c6-3 12-5 18-5l-2 18c-6 0-11 2-15 4z'],
       ['arm_junction', 'M26 116l13 3-4 28-13-3z'],
+      ['elbow', 'M21 152l14 2-2 15-14-2z'],
+      ['hand', 'M17 185l14 2-1 13c-1 7-13 7-13 0z'],
     ]
     : [
       ['superior', 'M156 82c-8-6-22-10-34-10l-2 10c12 1 24 5 32 10z'],
@@ -234,6 +243,8 @@ function bodySvg(side) {
       ['lateral', 'M170 96c-2-6-6-10-12-13l-8 12c3 3 6 8 7 13z'],
       ['scapular', 'M104 100h18c4 0 6 3 6 6v34c0 4-3 6-6 6h-14c-3 0-4-2-4-5z'],
       ['arm_junction', 'M174 116l-13 3 4 28 13-3z'],
+      ['elbow', 'M179 152l-14 2 2 15 14-2z'],
+      ['hand', 'M183 185l-14 2 1 13c1 7 13 7 13 0z'],
     ];
   return `<svg viewBox="0 0 200 260" role="img" aria-label="Diagram tubuh ${side === 'front' ? 'depan' : 'belakang'}">${body}
     ${zones.map(([id, d]) => `<path class="zone ${state.region === id ? 'active' : ''}" data-region="${id}" d="${d}"><title>${REGIONS.find((r) => r.id === id).idn}</title></path>`).join('')}
@@ -317,7 +328,7 @@ function movementDetail() {
     <p>${esc(m.desc)}</p>
     <div class="sec"><h3>Otot penggerak utama (prime movers)</h3><div class="role-list">${role(m.prime, HL.prime)}</div></div>
     <div class="sec"><h3>Otot pembantu & penstabil</h3><div class="role-list">${role(m.synergist, HL.synergist)}</div></div>
-    <div class="sec"><h3>Tendon yang terlibat</h3><div class="links">${m.tendons.map(linkChip).join('')}</div></div>
+    ${m.tendons.length ? `<div class="sec"><h3>Tendon yang terlibat</h3><div class="links">${m.tendons.map(linkChip).join('')}</div></div>` : ''}
     <div class="sec"><h3>Struktur sendi yang terlibat</h3><div class="links">${m.joints.map(linkChip).join('')}</div></div>
     ${m.note ? `<div class="note">${esc(m.note)}</div>` : ''}
     <div class="note">Klik nama otot untuk detail lengkap. Warna: <span style="color:${hex(HL.prime)}">■ utama</span> · <span style="color:${hex(HL.synergist)}">■ pembantu</span> · <span style="color:${hex(HL.tendon)}">■ tendon</span> · <span style="color:${hex(HL.joint)}">■ sendi</span></div>
@@ -333,7 +344,7 @@ function conditionDetail() {
     <div class="sec"><h3>Apa yang terjadi</h3><p>${esc(c.what)}</p></div>
     <div class="sec"><h3>Struktur yang terdampak (disorot merah)</h3><div class="links">${c.affected.map(linkChip).join('')}</div></div>
     <div class="sec"><h3>Gejala yang umum</h3>${list(c.symptoms)}</div>
-    <div class="sec"><h3>Gerakan yang mungkin terasa terganggu</h3><div class="links">${c.movements.map((id) => { const m = MOVEMENTS.find((x) => x.id === id); return `<span class="link-chip" data-gomv="${id}"><i style="background:var(--accent)"></i>${m.idn}</span>`; }).join('')}</div></div>
+    <div class="sec" ${c.movements.length ? '' : 'hidden'}><h3>Gerakan yang mungkin terasa terganggu</h3><div class="links">${c.movements.map((id) => { const m = MOVEMENTS.find((x) => x.id === id); return `<span class="link-chip" data-gomv="${id}"><i style="background:var(--accent)"></i>${m.idn}</span>`; }).join('')}</div></div>
     <div class="sec"><h3>Pemeriksaan yang biasa digunakan dokter</h3>${list(c.exams)}</div>
   </div>`;
 }

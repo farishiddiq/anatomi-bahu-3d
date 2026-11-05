@@ -84,4 +84,39 @@ export const CONDITIONS = [
     movements: ['flexion', 'abduction', 'horizontal_adduction', 'extension'],
     exams: ['Riwayat cedera & palpasi', 'Tes kekuatan melawan tahanan (resisted testing)', 'USG atau MRI bila curiga robekan besar (mis. ruptur pectoralis major)'],
   },
+
+  // ───── siku, lengan bawah & tangan (sumber: AAOS OrthoInfo; StatPearls – Lateral Epicondylitis, Carpal Tunnel Syndrome,
+  //       Cubital Tunnel Syndrome, Distal Biceps Tendon Rupture) ─────
+  {
+    id: 'lateral_epicondylitis', zone: 'arm', en: 'Lateral epicondylitis (tennis elbow)', idn: 'Tennis elbow (epikondilitis lateral)',
+    affected: ['ecrb', 'ext_digitorum', 'ecrl', 'rcl_elbow', 'humerus'],
+    what: 'Tendinopati pada origin bersama otot ekstensor di epikondilus lateral humerus – paling sering tendon extensor carpi radialis brevis (ECRB) – akibat beban berulang saat menggenggam dan mengangkat pergelangan. Walau disebut "tennis elbow", kebanyakan terjadi pada pekerja manual atau pengguna alat/komputer, usia 35–55 tahun. Pada model, area origin bersama ini tampil merah saat otot ECRB dipilih.',
+    symptoms: ['Nyeri di tonjolan tulang sisi luar siku, bisa menjalar ke lengan bawah', 'Nyeri saat menggenggam, mengangkat cangkir, memeras kain, atau berjabat tangan', 'Genggaman terasa lemah'],
+    movements: ['elbow_flexion', 'elbow_extension'],
+    exams: ['Nyeri tekan di epikondilus lateral', 'Cozen test (ekstensi pergelangan melawan tahanan)', 'Mill test', 'USG/MRI bila tidak membaik; singkirkan radial tunnel syndrome & masalah leher'],
+  },
+  {
+    id: 'carpal_tunnel', zone: 'arm', en: 'Carpal tunnel syndrome', idn: 'Sindrom terowongan karpal (CTS)',
+    affected: ['median_n', 'flexor_retinaculum', 'flexor_sheaths', 'carpals', 'thenar', 'fds', 'fdp', 'fpl'],
+    what: 'Saraf medianus tertekan di dalam carpal tunnel – terowongan sempit yang dibentuk tulang karpal (dasar) dan flexor retinaculum (atap), dilalui saraf medianus bersama 9 tendon fleksor. Neuropati jepitan yang paling sering. Faktor risiko: gerakan pergelangan berulang, kehamilan, diabetes, hipotiroid, artritis, obesitas. Cabang kulit telapak (palmar cutaneous branch) keluar di atas terowongan, sehingga kulit telapak tengah biasanya tidak baal.',
+    symptoms: ['Kesemutan/baal ibu jari, telunjuk, jari tengah, dan separuh jari manis', 'Gejala memburuk malam hari atau saat memegang ponsel/setir; membaik bila tangan dikibaskan', 'Kasus lanjut: pangkal ibu jari mengecil, barang mudah jatuh'],
+    movements: [],
+    exams: ['Tinel sign di pergelangan', 'Phalen test', 'Carpal compression test', 'Pemeriksaan konduksi saraf (EMG/NCS)', 'USG saraf medianus'],
+  },
+  {
+    id: 'cubital_tunnel', zone: 'arm', en: 'Cubital tunnel syndrome', idn: 'Sindrom terowongan kubiti (saraf ulnaris di siku)',
+    affected: ['ulnar_n', 'fcu', 'ucl_elbow', 'humerus', 'hypothenar', 'interossei'],
+    what: 'Saraf ulnaris tertekan atau teregang di belakang epikondilus medial ("tulang lucu") dan di bawah aponeurosis otot FCU. Neuropati jepitan kedua tersering. Siku yang lama ditekuk (tidur dengan tangan terlipat, menelepon) atau ditumpu memperberat tekanan.',
+    symptoms: ['Kesemutan/baal kelingking dan separuh jari manis', 'Nyeri sisi dalam siku', 'Tangan kikuk, sulit membuka-merapatkan jari; otot sela jari mengecil (lanjut)'],
+    movements: ['elbow_flexion'],
+    exams: ['Tinel sign di belakang epikondilus medial', 'Elbow flexion test', 'Froment sign & Wartenberg sign', 'Pemeriksaan konduksi saraf (EMG/NCS)'],
+  },
+  {
+    id: 'distal_biceps', zone: 'arm', en: 'Distal biceps tendon rupture', idn: 'Ruptur tendon biseps distal (di siku)',
+    affected: ['biceps', 'radius', 'supinator', 'brachialis'],
+    what: 'Tendon biseps putus dari radial tuberosity di siku, biasanya saat menahan beban berat dengan siku setengah ditekuk (gaya eksentrik), terutama pada pria usia 40–60 tahun. Berbeda dengan ruptur kepala panjang di bahu: kekuatan supinasi dan fleksi siku turun nyata, sehingga sering dipertimbangkan operasi dini.',
+    symptoms: ['"Pop" dan nyeri tajam di depan siku', 'Memar di siku/lengan bawah', 'Benjolan biseps bergeser ke atas ("reverse Popeye")', 'Lemah memutar telapak ke atas (membuka kenop pintu, obeng)'],
+    movements: ['elbow_flexion'],
+    exams: ['Hook test', 'Biceps squeeze test', 'MRI atau USG'],
+  },
 ];

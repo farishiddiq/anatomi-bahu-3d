@@ -36,11 +36,18 @@ const PARTS = [
   P('clavicle', 'S', 'Clavicler', 'bone', 6000, { bone: 'clavicle', cartilage: 'clavicle__cart' }),
   P('scapula', 'S', 'Scapular', 'bone', 22000, { bone: 'scapula', cartilage: 'region_glenoid' }),
   P('humerus', 'S', 'Humerusr', 'bone', 14000, { bone: 'humerus', cartilage: 'humerus__cart' }),
-  P('ctx_radius', 'S', 'Radiusr', 'context', 2500, { bone: 'forearm' }),
-  P('ctx_ulna', 'S', 'Ulnar', 'context', 2500, { bone: 'forearm' }),
+  // forearm & hand skeleton (all follow the forearm in the rig)
+  P('radius', 'S', 'Radiusr', 'bone', 2500, { bone: 'forearm', cartilage: true }),
+  P('ulna', 'S', 'Ulnar', 'bone', 2500, { bone: 'forearm', cartilage: true }),
+  ...[['scaphoid', 'Scaphoid'], ['lunate', 'Lunate'], ['triquetrum', 'Triquetrum'], ['pisiform', 'Pisiform'], ['trapezium', 'Trapezium'], ['trapezoid', 'Trapezoid'], ['capitate', 'Capitate'], ['hamate', 'Hamate']]
+    .map(([k, n]) => P('carpal_' + k, 'S', `${n}_boner`, 'bone', 900, { bone: 'forearm', cartilage: true })),
+  ...['First', 'Second', 'Third', 'Fourth', 'Fifth'].map((n, i) => P(`mc${i + 1}`, 'S', `${n}_metacarpal_boner`, 'bone', 1200, { bone: 'forearm', cartilage: true })),
+  ...['first', 'second', 'third', 'fourth', 'fifth'].flatMap((n, i) => [['prox', 'Proximal'], ['mid', 'Middle'], ['dist', 'Distal']]
+    .filter(([k]) => !(i === 0 && k === 'mid'))
+    .map(([k, N]) => P(`ph_${k}${i + 1}`, 'S', `${N}_phalanx_of_${n}_finger_of_handr`, 'bone', 800, { bone: 'forearm', cartilage: true }))),
   P('ctx_sternum', 'S', ['Manubrium_of_sternum', 'Body_of_sternum'], 'context', 4000, { bone: 'thorax', perFile: true }),
-  P('ctx_ribs', 'S', [...RIBS.map((r) => `${r}_ribr`), ...CC.map((c) => `Costal_cartilage_of_${c}_ribr`)], 'context', 30000, { bone: 'thorax', perFile: true }),
-  P('ctx_spine', 'S', VERT, 'context', 30000, { bone: 'thorax', perFile: true }),
+  P('ctx_ribs', 'S', [...RIBS.map((r) => `${r}_ribr`), ...CC.map((c) => `Costal_cartilage_of_${c}_ribr`)], 'context', 18000, { bone: 'thorax', perFile: true }),
+  P('ctx_spine', 'S', VERT, 'context', 18000, { bone: 'thorax', perFile: true }),
   P('ctx_hip', 'S', 'Hip_boner', 'context', 3000, { bone: 'thorax' }),
 
   P('deltoid_clav', 'M', 'Clavicular_part_of_deltoid_muscler', 'muscle', 6000, { attach: ['clavicle', 'humerus'] }),
@@ -71,6 +78,58 @@ const PARTS = [
   P('serratus_anterior', 'M', 'Serratus_anterior_muscler', 'muscle', 10000, { attach: ['thorax', 'scapula'] }),
   P('subclavius', 'M', 'Subclavius_muscler', 'muscle', 1500, { attach: ['thorax', 'clavicle'] }),
 
+  // elbow & forearm muscles (Z-Anatomy). fp = base name of the footprint meshes; common = shared epicondyle origin
+  ...(() => {
+    const HF = { attach: ['humerus', 'forearm'] }, F = { bone: 'forearm' };
+    return [
+      P('brachialis', 'M', 'Brachialis_muscler', 'muscle', 4000, { ...HF }),
+      P('brachioradialis', 'M', 'Brachioradialis_muscler', 'muscle', 5000, { ...HF }),
+      P('pt_sup', 'M', 'Superficial_head_of_pronator_teresr', 'muscle', 2500, { ...HF, fp: ['Pronator_teres'], common: 'flexor' }),
+      P('pt_deep', 'M', 'Deep_head_of_pronator_teresr', 'muscle', 1000, { ...HF }),
+      P('fcr', 'M', 'Flexor_carpi_radialisr', 'muscle', 2000, { ...HF, common: 'flexor' }),
+      P('palmaris_longus', 'M', 'Palmaris_longus_muscler', 'muscle', 2500, { ...HF, common: 'flexor' }),
+      P('fcu_hum', 'M', 'Humeral_head_of_flexor_carpi_ulnarisr', 'muscle', 2600, { ...HF, fp: ['Flexor_carpi_ulnaris'], common: 'flexor' }),
+      P('fcu_uln', 'M', 'Ulnar_head_of_flexor_carpi_ulnarisr', 'muscle', 1400, { ...HF }),
+      P('fds_hu', 'M', 'Humero-ulnar_head_of_flexor_digitorum_superficialisr', 'muscle', 6500, { ...HF, fp: ['Flexor_digitorum_superficialis'], common: 'flexor' }),
+      P('fds_rad', 'M', 'Radial_head_of_flexor_digitorum_superficialisr', 'muscle', 1200, { ...F }),
+      P('fdp', 'M', 'Flexor_digitorum_profundusr', 'muscle', 5500, { ...F }),
+      P('fpl', 'M', 'Flexor_pollicis_longusr', 'muscle', 1800, { ...F }),
+      P('pronator_quadratus', 'M', 'Pronator_quadratusr', 'muscle', 1000, { ...F }),
+      P('ecrl', 'M', 'Extensor_carpi_radialis_longusr', 'muscle', 3000, { ...HF }),
+      P('ecrb', 'M', 'Extensor_carpi_radialis_brevisr', 'muscle', 2600, { ...HF, common: 'extensor' }),
+      P('ext_digitorum', 'M', 'Extensor_digitorumr', 'muscle', 5000, { ...HF, common: 'extensor' }),
+      P('edm', 'M', 'Extensor_digiti_minimir', 'muscle', 1800, { ...HF, common: 'extensor' }),
+      P('ecu_hum', 'M', 'Humeral_head_of_extensor_carpi_ulnarisr', 'muscle', 1000, { ...HF, fp: ['Extensor_carpi_ulnaris'], common: 'extensor' }),
+      P('ecu_uln', 'M', 'Ulnar_head_of_extensor_carpi_ulnarisr', 'muscle', 700, { ...F }),
+      P('anconeus', 'M', 'Anconeus_muscler', 'muscle', 1400, { ...HF }),
+      P('supinator', 'M', 'Supinatorr', 'muscle', 2500, { ...HF }),
+      P('apl', 'M', 'Abductor_pollicis_longusr', 'muscle', 2000, { ...F }),
+      P('epb', 'M', 'Extensor_pollicis_brevisr', 'muscle', 1100, { ...F }),
+      P('epl', 'M', 'Extensor_pollicis_longusr', 'muscle', 1500, { ...F }),
+      P('ext_indicis', 'M', 'Extensor_indicisr', 'muscle', 1100, { ...F }),
+      // hand
+      P('apb', 'M', 'Abductor_pollicis_brevisr', 'muscle', 600, { ...F }),
+      P('fpb_sup', 'M', 'Superficial_head_of_flexor_pollicis_brevisr', 'muscle', 300, { ...F }),
+      P('fpb_deep', 'M', 'Deep_head_of_flexor_pollicis_brevisr', 'muscle', 700, { ...F }),
+      P('opp_pollicis', 'M', 'Opponens_pollicis_muscler', 'muscle', 400, { ...F }),
+      P('add_obl', 'M', 'Oblique_head_of_adductor_pollicisr', 'muscle', 450, { ...F, fp: ['Adductor_pollicis'] }),
+      P('add_trans', 'M', 'Transverse_head_of_adductor_pollicisr', 'muscle', 1000, { ...F, fp: ['Adductor_pollicis'] }),
+      P('adm', 'M', 'Abductor_digiti_minimi_of_handr', 'muscle', 700, { ...F }),
+      P('fdm', 'M', 'Flexor_digiti_minimi_of_handr', 'muscle', 310, { ...F }),
+      P('odm', 'M', 'Opponens_digiti_minimi_muscle_of_handr', 'muscle', 420, { ...F }),
+      P('lumbricals', 'M', 'Lumbrical_muscles_of_handr', 'muscle', 1400, { ...F }),
+      P('dorsal_interossei', 'M', 'Dorsal_interossei_muscles_of_handr', 'muscle', 1400, { ...F }),
+      P('palmar_interossei', 'M', 'Palmar_interossei_musclesr', 'muscle', 180, { ...F }),
+      // retinacula, aponeurosis, tendon sheaths
+      P('flexor_retinaculum', 'M', 'Flexor_retinaculum_of_wristr', 'ligament', 600, { ...F }),
+      P('extensor_retinaculum', 'M', 'Extensor_retinaculum_of_wristr', 'ligament', 400, { ...F }),
+      P('palmar_aponeurosis', 'M', 'Palmar_aponeurosisr', 'ligament', 1300, { ...F }),
+      P('fibrous_sheaths', 'M', 'Cruciform_part_of_fibrous_sheath_of_digit_of_handr', 'ligament', 2500, { ...F }),
+      P('common_flexor_sheath', 'M', 'Common_flexor_tendon_sheathr', 'joint', 3500, { ...F }),
+      P('digital_sheaths', 'M', 'Synovial_sheaths_of_digits_of_handr', 'joint', 2500, { ...F }),
+    ];
+  })(),
+
   // bursae & joint tissues (Z-Anatomy)
   P('bursa_subacromial', 'M', 'Subacromial_bursar', 'joint', 1200, { attach: ['scapula', 'humerus'] }),
   P('bursa_subdeltoid', 'M', 'Subdeltoid_bursar', 'joint', 1200, { attach: ['scapula', 'humerus'] }),
@@ -98,6 +157,29 @@ const PARTS = [
   P('lig_costoclav', 'J', 'Costoclavicular_ligamentr', 'ligament', 200, { attach: ['thorax', 'clavicle'] }),
   P('lig_interclav', 'J', 'Interclavicular_ligamentr', 'ligament', 300, { attach: ['thorax', 'clavicle'] }),
 
+  // elbow, forearm, wrist & hand joints (Z-Anatomy). Placeholder boxes (12-tri meshes) in the source are not used.
+  P('elbow_capsule', 'J', 'Articular_capsule_of_elbow_jointr', 'joint', 1800, { attach: ['humerus', 'forearm'] }),
+  P('lig_ucl', 'J', 'Ulnar_collateral_ligamentr', 'ligament', 500, { attach: ['humerus', 'forearm'] }),
+  P('lig_rcl', 'J', 'Radial_collateral_ligamentr', 'ligament', 300, { attach: ['humerus', 'forearm'] }),
+  P('lig_annular', 'J', 'Annular_ligament_of_radiusr', 'ligament', 400, { bone: 'forearm' }),
+  P('interosseous_membrane', 'J', 'Interosseous_membrane_of_forearmr', 'ligament', 1500, { bone: 'forearm' }),
+  P('druj_disc', 'J', 'Articular_disc_of_distal_radio-ulnar_jointr', 'joint', 60, { bone: 'forearm' }),
+  P('lig_palmar_ru', 'J', 'Palmar_radio-ulnar_ligamentr', 'ligament', 100, { bone: 'forearm' }),
+  P('wrist_capsule', 'J', 'Articular_capsule_of_radiocarpal_jointr', 'joint', 1400, { bone: 'forearm' }),
+  P('lig_wrist_rcl', 'J', 'Radial_collateral_ligament_of_wrist_jointr', 'ligament', 150, { bone: 'forearm' }),
+  P('lig_wrist_ucl', 'J', 'Ulnar_collateral_ligament_of_wrist_jointr', 'ligament', 150, { bone: 'forearm' }),
+  P('lig_radiate_carpal', 'J', 'Radiate_carpal_ligamentr', 'ligament', 420, { bone: 'forearm' }),
+  P('lig_dorsal_radiocarpal', 'J', ['Dorsal_radiocarpal_ligamentr', 'Dorsal_ulnocarpal_ligamentr'], 'ligament', 400, { bone: 'forearm' }),
+  P('lig_intercarpal', 'J', ['Dorsal_intercarpal_ligamentsr', 'Palmar_scaphotriquetral_ligamentr', 'Dorsal_scaphotriquetral_ligamentr'], 'ligament', 800, { bone: 'forearm' }),
+  P('lig_cmc', 'J', ['Palmar_carpometacarpal_ligamentsr', 'Dorsal_carpometacarpal_ligamentsr'], 'ligament', 600, { bone: 'forearm' }),
+  P('mcp_capsule', 'J', 'Articular_capsules_of_metacarpophalangeal_jointsr', 'joint', 1600, { bone: 'forearm' }),
+  P('lig_mcp_collateral', 'J', 'Collateral_metacarpophalangeal_ligamentsr', 'ligament', 1100, { bone: 'forearm' }),
+  P('lig_deep_transverse_mc', 'J', 'Deep_transverse_metacarpal_ligamentr', 'ligament', 60, { bone: 'forearm' }),
+  P('pip_capsule', 'J', 'Articular_capsules_of_proximal_interphalangeal_jointsr', 'joint', 1400, { bone: 'forearm' }),
+  P('dip_capsule', 'J', 'Articular_capsules_of_distal_interphalangeal_jointsr', 'joint', 1500, { bone: 'forearm' }),
+  P('lig_ip_collateral', 'J', 'Collateral_interphalangeal_ligaments_of_handr', 'ligament', 2000, { bone: 'forearm' }),
+  P('lig_palmar_plates', 'J', 'Palmar_interphalangeal_ligamentsr', 'ligament', 900, { bone: 'forearm' }),
+
   // nerves (Z-Anatomy)
   P('n_plexus_roots', 'N', 'Roots_of_brachial_plexusr', 'nerve', 4000, { attach: ['thorax'] }),
   P('n_plexus_trunks', 'N', ['Superior_trunk_of_brachial_plexusr', 'Middle_trunk_of_brachial_plexusr', 'Inferior_trunk_of_brachial_plexusr'], 'nerve', 1500, { attach: ['thorax', 'clavicle'] }),
@@ -110,24 +192,67 @@ const PARTS = [
   P('n_thoracodorsal', 'N', 'Thoracodorsal_nerver', 'nerve', 2500, { attach: ['thorax', 'humerus'] }),
   P('n_subscapular', 'N', ['Superior_subscapular_nerver', 'Inferior_subscapular_nerver'], 'nerve', 2000, { attach: ['thorax', 'scapula'] }),
   P('n_pectoral', 'N', ['Lateral_pectoral_nerver', 'Medial_pectoral_nerver'], 'nerve', 3500, { attach: ['thorax', 'clavicle', 'humerus'] }),
-  P('n_musculocutaneous', 'N', 'Musculocutaneous_nerver', 'nerve', 1500, { attach: ['thorax', 'humerus', 'forearm'], clipElbow: true }),
-  P('n_radial', 'N', 'Radial_nerver', 'nerve', 2000, { attach: ['thorax', 'humerus', 'forearm'], clipElbow: true }),
-  P('n_median', 'N', 'Median_nerver', 'nerve', 2000, { attach: ['thorax', 'humerus', 'forearm'], clipElbow: true }),
-  P('n_ulnar', 'N', 'Ulnar_nerver', 'nerve', 2000, { attach: ['thorax', 'humerus', 'forearm'], clipElbow: true }),
+  // arm nerves – complete down to the fingertips
+  P('n_musculocutaneous', 'N', 'Musculocutaneous_nerver', 'nerve', 1500, { attach: ['thorax', 'humerus', 'forearm'] }),
+  P('n_lat_antebrach_cut', 'N', 'Lateral_antebrachial_cutaneous_nerver', 'nerve', 1500, { attach: ['humerus', 'forearm'] }),
+  P('n_radial', 'N', 'Radial_nerver', 'nerve', 2500, { attach: ['thorax', 'humerus', 'forearm'] }),
+  P('n_radial_musc', 'N', 'Muscular_branches_of_radial_nerver', 'nerve', 1800, { attach: ['humerus', 'forearm'] }),
+  P('n_radial_sup', 'N', 'Superficial_branch_of_radial_nerver', 'nerve', 2500, { attach: ['humerus', 'forearm'] }),
+  P('n_radial_deep', 'N', 'Deep_branch_of_radial_nerver', 'nerve', 1400, { attach: ['humerus', 'forearm'] }),
+  P('n_pin', 'N', 'Posterior_interosseous_nerve_of_forearmr', 'nerve', 1200, { bone: 'forearm' }),
+  P('n_radial_dig', 'N', 'Dorsal_digital_branches_of_radial_nerver', 'nerve', 5000, { bone: 'forearm' }),
+  P('n_post_antebrach_cut', 'N', 'Posterior_antebrachial_cutaneous_nerver', 'nerve', 1800, { attach: ['humerus', 'forearm'] }),
+  P('n_inf_lat_brach_cut', 'N', 'Inferior_lateral_brachial_cutaneous_nerver', 'nerve', 400, { attach: ['humerus', 'forearm'] }),
+  P('n_median', 'N', 'Median_nerver', 'nerve', 3500, { attach: ['thorax', 'humerus', 'forearm'] }),
+  P('n_median_musc', 'N', 'Muscular_branches_of_median_nerver', 'nerve', 900, { attach: ['humerus', 'forearm'] }),
+  P('n_ain', 'N', 'Anterior_interosseous_nerve_of_forearmr', 'nerve', 1100, { attach: ['humerus', 'forearm'] }),
+  P('n_median_palmar', 'N', 'Palmar_branch_of_median_nerver', 'nerve', 800, { bone: 'forearm' }),
+  P('n_median_cpd', 'N', 'Common_palmar_digital_branches_of_median_nerver', 'nerve', 1500, { bone: 'forearm' }),
+  P('n_median_ppd', 'N', 'Proper_palmar_digital_branches_of_median_nerver', 'nerve', 5000, { bone: 'forearm' }),
+  P('n_ulnar', 'N', 'Ulnar_nerver', 'nerve', 2500, { attach: ['thorax', 'humerus', 'forearm'] }),
+  P('n_ulnar_musc', 'N', 'Muscular_branches_of_ulnar_nerver', 'nerve', 450, { attach: ['humerus', 'forearm'] }),
+  P('n_ulnar_dorsal', 'N', 'Dorsal_branch_of_ulnar_nerver', 'nerve', 1000, { bone: 'forearm' }),
+  P('n_ulnar_palmar', 'N', 'Palmar_branch_of_ulnar_nerver', 'nerve', 800, { bone: 'forearm' }),
+  P('n_ulnar_sup', 'N', 'Superficial_branch_of_ulnar_nerver', 'nerve', 600, { bone: 'forearm' }),
+  P('n_ulnar_deep', 'N', 'Deep_branch_of_ulnar_nerver', 'nerve', 1000, { bone: 'forearm' }),
+  P('n_ulnar_cpd', 'N', 'Common_palmar_digital_branches_of_ulnar_nerver', 'nerve', 1200, { bone: 'forearm' }),
+  P('n_ulnar_ppd', 'N', 'Proper_palmar_digital_branches_of_ulnar_nerver', 'nerve', 3000, { bone: 'forearm' }),
+  P('n_ulnar_ddig', 'N', 'Dorsal_digital_branches_of_ulnar_nerver', 'nerve', 2500, { bone: 'forearm' }),
+  P('n_comm_med_uln', 'N', '(Communicating_branch_of_median_nerve_with_ulnar_nerve)r', 'nerve', 400, { bone: 'forearm' }),
+  P('n_med_brach_cut', 'N', 'Medial_brachial_cutaneous_nerver', 'nerve', 1200, { attach: ['thorax', 'humerus'] }),
+  P('n_med_antebrach_cut', 'N', ['Medial_antebrachial_cutaneous_nerver', 'Anterior_branch_of_medial_antebrachial_cutaneous_nerver', 'Posterior_branch_of_medial_antebrachial_cutaneous_nerver'], 'nerve', 3500, { attach: ['thorax', 'humerus', 'forearm'] }),
 
   // vessels (Z-Anatomy)
   P('subclavian_a', 'C', 'Right_subclavian_artery', 'artery', 1500, { attach: ['thorax'] }),
   P('axillary_a', 'C', 'Axillary_arteryr', 'artery', 1500, { attach: ['thorax', 'humerus'] }),
   P('thoracoacromial_a', 'C', ['Thoraco-acromial_arteryr', 'Pectoral_branches_of_thoraco-acromial_arteryr'], 'artery', 2000, { attach: ['thorax', 'clavicle', 'scapula', 'humerus'] }),
   P('subscapular_a', 'C', ['Subscapular_arteryr', 'Thoracodorsal_arteryr'], 'artery', 1500, { attach: ['thorax', 'scapula', 'humerus'] }),
-  P('brachial_a', 'C', 'Brachial_arteryr', 'artery', 1500, { attach: ['humerus', 'forearm'], clipElbow: true }),
+  P('brachial_a', 'C', 'Brachial_arteryr', 'artery', 1500, { attach: ['humerus', 'forearm'] }),
+  P('a_collateral', 'C', ['Radial_collateral_arteryr', 'Superior_ulnar_collateral_arteryr', 'Inferior_ulnar_collateral_arteryr'], 'artery', 1500, { attach: ['humerus', 'forearm'] }),
+  P('radial_a', 'C', 'Radial_arteryr', 'artery', 1500, { attach: ['humerus', 'forearm'] }),
+  P('a_palmar_carpal_rad', 'C', 'Palmar_carpal_branch_of_radial_arteryr', 'artery', 200, { bone: 'forearm' }),
+  P('ulnar_a', 'C', 'Ulnar_arteryr', 'artery', 1200, { attach: ['humerus', 'forearm'] }),
+  P('a_ulnar_recurrent', 'C', '(Ulnar_recurrent_artery)r', 'artery', 250, { attach: ['humerus', 'forearm'] }),
+  P('a_interosseous', 'C', ['Common_interosseous_arteryr', 'Posterior_interosseous_arteryr', 'Recurrent_interosseous_arteryr'], 'artery', 1200, { attach: ['humerus', 'forearm'] }),
+  P('a_dorsal_carpal', 'C', ['Dorsal_carpal_branch_of_ulnar_arteryr', 'Dorsal_carpal_anastomosisr'], 'artery', 700, { bone: 'forearm' }),
+  P('a_sup_palmar_arch', 'C', 'Superficial_palmar_archr', 'artery', 1000, { bone: 'forearm' }),
+  P('a_deep_palmar_arch', 'C', ['Deep_palmar_archr', 'Palmar_metacarpal_arteriesr'], 'artery', 1800, { bone: 'forearm' }),
+  P('a_palmar_digital', 'C', ['Common_palmar_digital_arteriesr', 'Proper_palmar_digital_arteriesr'], 'artery', 5000, { bone: 'forearm', perFile: true }),
+  P('a_dorsal_digital', 'C', ['Dorsal_metacarpal_arteriesr', 'Dorsal_digital_arteries_of_handr'], 'artery', 3000, { bone: 'forearm', perFile: true }),
   P('deep_brachial_a', 'C', 'Deep_brachial_arteryr', 'artery', 800, { attach: ['humerus'] }),
   P('post_circ_a', 'C', 'Posterior_circumflex_humeral_arteryr', 'artery', 1000, { attach: ['scapula', 'humerus'] }),
   P('ant_circ_a', 'C', 'Anterior_circumflex_humeral_arteryr', 'artery', 1200, { attach: ['humerus'] }),
   P('suprascapular_a', 'C', 'Suprascapular_arteryr', 'artery', 1500, { attach: ['thorax', 'clavicle', 'scapula'] }),
   P('axillary_v', 'C', 'Axillary_veinr', 'vein', 1200, { attach: ['thorax', 'humerus'] }),
   P('subclavian_v', 'C', 'Right_subclavian_vein', 'vein', 800, { attach: ['thorax', 'clavicle'] }),
-  P('cephalic_v', 'C', 'Cephalic_veinr', 'vein', 2500, { attach: ['thorax', 'clavicle', 'humerus', 'forearm'], clipElbow: true }),
+  P('cephalic_v', 'C', 'Cephalic_veinr', 'vein', 3500, { attach: ['thorax', 'clavicle', 'humerus', 'forearm'] }),
+  P('basilic_v', 'C', 'Basilic_veinr', 'vein', 2200, { attach: ['thorax', 'humerus', 'forearm'] }),
+  P('median_cubital_v', 'C', 'Median_cubital_veinr', 'vein', 700, { attach: ['humerus', 'forearm'] }),
+  P('median_antebrachial_v', 'C', 'Median_antebrachial_veinr', 'vein', 1600, { attach: ['humerus', 'forearm'] }),
+  P('dorsal_venous_network', 'C', 'Dorsal_venous_network_of_handr', 'vein', 1000, { bone: 'forearm' }),
+  P('v_palmar_arches', 'C', ['Superficial_venous_palmar_archr', 'Deep_venous_palmar_archr'], 'vein', 2000, { bone: 'forearm' }),
+  P('brachial_vv', 'C', 'Brachial_veinsr', 'vein', 1000, { attach: ['thorax', 'humerus', 'forearm'] }),
+  P('radial_ulnar_vv', 'C', ['Radial_veinsr', 'Ulnar_veinsr'], 'vein', 1800, { attach: ['humerus', 'forearm'] }),
 ];
 // muscle attachment areas (Z-Anatomy footprints "<muscle>o#r" / "<muscle>e#r" on the skeleton)
 // INSERTION lists the rig group(s) on which the muscle INSERTS; footprints on other groups are origins.
@@ -363,7 +488,10 @@ for (const part of PARTS) {
   if (!part.perFile) body = simplify(body, part.tris - tBudget, !!tendon || !!cart);
   meshes[part.key] = orient(body);
   if (tendon) extra.push({ key: part.key + '__tendon', src: part, mesh: orient(simplify(tendon, tBudget, true)), kind: 'tendon' });
-  if (cart) extra.push({ key: part.cartilage, src: part, mesh: orient(simplify(cart, 3000, true)), kind: 'cartilage' });
+  if (cart && cart.idx.length) {
+    const own = part.cartilage === true;
+    extra.push({ key: own ? part.key + '__cart' : part.cartilage, src: part, mesh: orient(simplify(cart, own ? Math.max(80, Math.round(part.tris * 0.6)) : 3000, true)), kind: 'cartilage' });
+  }
   console.log(`  ${part.key.padEnd(24)} ${String(body.idx.length / 3).padStart(6)} tris${tendon ? ` + tendon ${tBudget}` : ''}${cart ? ' + cartilage' : ''}`);
 }
 
@@ -428,6 +556,12 @@ const glenC = centroid(glenMesh.pos);
 const spinoglenoid = (() => { let b = null; for (const p of scapPts) { if (dot(p, A) > -headR * 0.7) continue; const d = Math.abs(p[1] - 2) + Math.abs(lp(p) - (lp(glenC) - 10)) * 0.8; if (!b || d < b.d) b = { p, d }; } return b.p; })();
 const slice = (y, tol = 3) => { const pts = []; for (let i = 0; i < H.pos.length / 3; i++) { const p = vtx(H, i); if (Math.abs(p[1] - y) < tol) pts.push(p); } const c = centroid(new Float32Array(pts.flat())); let r = 0; for (const p of pts) r += Math.hypot(p[0] - c[0], p[2] - c[2]); return { c, r: r / pts.length }; };
 const shaft = slice(-headR - 75);
+// elbow epicondyles (extremes of the distal humerus along the lateral axis), wrist and hand centres
+const epi = { lat: null, med: null };
+for (let i = 0; i < H.pos.length / 3; i++) { const q = vtx(H, i); if (q[1] > hminY + 45) continue; if (!epi.lat || lp(q) > lp(epi.lat)) epi.lat = q; if (!epi.med || lp(q) < lp(epi.med)) epi.med = q; }
+const wrist = centroid(meshes.wrist_capsule.pos);
+const hand = centroid(merge(['mc2', 'mc3', 'mc4', 'mc5'].map((k) => meshes[k])).pos);
+let tipY = Infinity; for (const k of ['ph_dist2', 'ph_dist3', 'ph_dist4']) for (let i = 1; i < meshes[k].pos.length; i += 3) tipY = Math.min(tipY, meshes[k].pos[i]);
 
 // ───── rig weights ─────
 const boneGroups = {};
@@ -484,6 +618,10 @@ for (const e of extra) {
   }
   // tendon part of a muscle (chain weights were computed together with the muscle body)
   const m = e.mesh;
+  if (!e.src.attach && e.src.bone) {
+    output.push({ name: e.key, mesh: m, extras: { cat: 'muscle', tendonPart: true, level: LEVEL[e.src.bone] } });
+    continue;
+  }
   if (e.src.tendon === 'split_lhb') {
     // the long head of biceps has a proximal (LHB) and a distal tendon: split by component height
     const comps = components(m);
@@ -506,34 +644,50 @@ for (const e of extra) {
 // ───── muscle attachment footprints (origin / insertion) ─────
 const SK = fbx('S');
 const footprints = {};
+// footprint base name -> muscle parts using it (a base can be shared, e.g. the common flexor / extensor origin)
+const COMMON = { flexor: 'Common_flexor_tendon', extensor: 'Common_extensor_tendon' };
+const fpOwners = new Map();
 for (const part of PARTS.filter((p) => p.cat === 'muscle')) {
-  const base = part.src[0].replace(/r$/, '');
+  const bases = [...(part.fp ?? [part.src[0].replace(/r$/, '')]), ...(part.common ? [COMMON[part.common]] : [])];
+  for (const b of bases) { if (!fpOwners.has(b)) fpOwners.set(b, []); fpOwners.get(b).push(part.key); }
+}
+for (const [base, owners] of fpOwners) {
   const esc = base.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const re = new RegExp(`^${esc}[oe]\\d*r$`);
+  const re = new RegExp(`^${esc}([oe])\\d*r$`);
   const names = [...SK.keys()].filter((n) => re.test(n));
+  if (!names.length) { console.log('  (no footprint)', owners.join(',')); continue; }
   const byType = { o: [], i: [] };
+  const legacy = INSERTION[owners[0]];
   for (const n of names) {
     let fm = meshFrom(SK.get(n)); fm = { pos: fm.pos, idx: fm.idx };
     for (let i = 0; i < fm.pos.length; i += 3) { fm.pos[i] -= GH0[0]; fm.pos[i + 1] -= GH0[1]; fm.pos[i + 2] -= GH0[2]; }
     const g = levelOf(centroid(fm.pos));
-    const type = INSERTION[part.key].includes(g) ? 'i' : 'o';
-    fm.group = g;
+    // shoulder muscles: origin/insertion by the bone group (the o/e suffix of the source is not always reliable there);
+    // elbow/forearm/hand muscles: the source suffix (o = origin, e = end/insertion), checked below
+    const type = legacy ? (legacy.includes(g) ? 'i' : 'o') : re.exec(n)[1] === 'o' ? 'o' : 'i';
+    fm.group = g; fm.cy = centroid(fm.pos)[1];
     byType[type].push(fm);
   }
+  if (!legacy && byType.o.length && byType.i.length) {
+    // arm hanging: an origin must not lie clearly distal to the insertion
+    const my = (l) => l.reduce((s, f) => s + f.cy, 0) / l.length;
+    if (my(byType.o) < my(byType.i) - 15) { console.log('  !! swapped o/e for', base); [byType.o, byType.i] = [byType.i, byType.o]; }
+  }
+  const slug = owners.length === 1 ? owners[0] : base.toLowerCase();
   for (const t of ['o', 'i']) {
     const list = byType[t]; if (!list.length) continue;
     // split per bone group so each piece follows its bone
     const per = {};
     for (const f of list) (per[f.group] ||= []).push(f);
     for (const [g, fl] of Object.entries(per)) {
-      const mm = orient(simplify(merge(fl), 2500));
+      const name = `fp_${slug}_${t}_${g}`;
+      if (output.some((o) => o.name === name)) continue;
+      const mm = orient(simplify(merge(fl), 1200));
       const N = normals(mm); for (let i = 0; i < mm.pos.length; i++) mm.pos[i] += N[i] * 0.3;
-      const name = `fp_${part.key}_${t}_${g}`;
-      output.push({ name, mesh: mm, extras: { cat: 'footprint', level: LEVEL[g], muscle: part.key, type: t } });
-      (footprints[part.key] ||= []).push(name);
+      output.push({ name, mesh: mm, extras: { cat: 'footprint', level: LEVEL[g], muscle: owners.join(','), type: t } });
+      for (const o of owners) (footprints[o] ||= []).push(name);
     }
   }
-  if (!names.length) console.log('  (no footprint)', part.key);
 }
 
 // ───── derived tendon areas for muscles WITHOUT a modelled tendon (supraspinatus, subscapularis, teres minor) ─────
@@ -580,9 +734,9 @@ for (const { name, mesh: m, extras } of output) {
   if (!m.idx.length) { console.log('  (empty)', name); continue; }
   const prim = doc.createPrimitive()
     .setAttribute('POSITION', doc.createAccessor().setType('VEC3').setArray(m.pos).setBuffer(buffer))
-    .setAttribute('NORMAL', doc.createAccessor().setType('VEC3').setArray(normals(m)).setBuffer(buffer))
     .setIndices(doc.createAccessor().setType('SCALAR').setArray(m.pos.length / 3 < 65535 ? new Uint16Array(m.idx) : new Uint32Array(m.idx)).setBuffer(buffer));
-  if (m.chain) prim.setAttribute('_CHAIN', doc.createAccessor().setType('VEC4').setArray(m.chain).setBuffer(buffer));
+  // normals are recomputed in the viewer (same area-weighted vertex normals); rig chain weights stored as normalized uint8
+  if (m.chain) prim.setAttribute('_CHAIN', doc.createAccessor().setType('VEC4').setArray(Uint8Array.from(m.chain, (v) => Math.round(Math.min(1, Math.max(0, v)) * 255))).setNormalized(true).setBuffer(buffer));
   scene.addChild(doc.createNode(name).setMesh(doc.createMesh(name).addPrimitive(prim)).setExtras(extras));
   totalTris += m.idx.length / 3;
 }
@@ -592,6 +746,7 @@ const landmarks = {
   axes: { up: U, anterior: A, lateral: L },
   gh: [0, 0, 0], headR: +headR.toFixed(2), elbow: r1(elbow), sc: r1(SC), ac: r1(AC),
   glenC: r1(glenC), scapInf: r1(scapInf), spinoglenoid: r1(spinoglenoid), shaft: { c: r1(shaft.c), r: +shaft.r.toFixed(1) },
+  epiLat: r1(epi.lat), epiMed: r1(epi.med), wrist: r1(wrist), hand: r1(hand), fingertipY: +tipY.toFixed(1),
   footprints, derivedTendons: derived,
 };
 fs.writeFileSync(path.join(OUT, 'landmarks.json'), JSON.stringify(landmarks, null, 1));
